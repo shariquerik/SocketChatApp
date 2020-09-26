@@ -75,4 +75,8 @@ io.on('connection', socket => {
     })
 })
 
+if(process.env.NODE_ENV === 'production'){
+    app.use(express.static('./build'));
+}
+
 http.listen(process.env.PORT || 3000, () => console.log(`Server Connected at port ${process.env.PORT}`));
