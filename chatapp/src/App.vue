@@ -18,6 +18,7 @@ import Messages from "./components/Messages"
 import ChatHeader from "./components/ChatHeader"
 import Sender from "./components/Sender"
 
+const socketURL = "http://localhost:3000"
 export default {
   name: "app",
   components: {
@@ -28,7 +29,7 @@ export default {
   data() {
     return{
       username: "",
-      socket: io("http://localhost:3000"),
+      socket: io(socketURL),
       messages: [],
       users: [],
       index: 0
