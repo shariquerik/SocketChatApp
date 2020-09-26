@@ -1,3 +1,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer utilities {
+    .triangle-topleft { 
+        border-top: 20px solid #5a67d8; 
+        border-right: 15px solid transparent; 
+    }
+
+    .triangle-topright { 
+        border-top: 20px solid #667eea; 
+        border-left: 15px solid transparent; 
+    }
+}
