@@ -7,7 +7,11 @@ module.exports = {
 
         // Specify the paths to all of the template files in your project
         content: [
-          './**/*.html'
+          './**/*.html',
+          './**/*.vue',
+          './public/*.html',
+          './src/*.vue',
+          './src/**/*.vue'
           // etc.
         ],
       

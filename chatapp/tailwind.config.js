@@ -4,7 +4,11 @@ module.exports = {
     // purgeLayersByDefault: true,
   },
   purge: [
-    // './inventory/**/*.html'
+    './**/*.html',
+    './**/*.vue',
+    './public/*.html',
+    './src/*.vue',
+    './src/**/*.vue'
   ],
   target: 'relaxed',
   prefix: '',

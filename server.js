@@ -1,7 +1,7 @@
 const app = require('express')();
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
-// const mongoose = require('mongoose');
+const mongoose = require('mongoose');
 const moment = require('moment')
 require('dotenv').config();
 
@@ -9,20 +9,20 @@ let users = [];
 let messages = [];
 let index = 0; 
 
-// mongoose.connect( process.env.DB_NAME ,{ useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true, })
-//         .then(() => console.log('DB connnection successful!'));
+mongoose.connect( process.env.DB_NAME ,{ useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true, })
+        .then(() => console.log('DB connnection successful!'));
 
-// const ChatSchema = new mongoose.Schema({
-//     username: String,
-//     msg: String
-// })
+const ChatSchema = new mongoose.Schema({
+    username: String,
+    msg: String
+})
 
-// const ChatModel = mongoose.model('chat', ChatSchema);
+const ChatModel = mongoose.model('chat', ChatSchema);
 
-// ChatModel.find((err, docs) => {
-//     if(err) throw err;
-//     messages = docs;
-// })
+ChatModel.find((err, docs) => {
+    if(err) throw err;
+    messages = docs;
+})
 
 io.on('connection', socket => {
 
@@ -42,27 +42,28 @@ io.on('connection', socket => {
 
     // new msg came
     socket.on('msg', msg => {
-        let message = {
-            index: index, 
-            username: socket.username, 
-            msg: msg,
+        // let message = {
+        //     index: index, 
+        //     username: socket.username, 
+        //     msg: msg,
+        //     timestamp: moment().format('LT')
+        // }
+
+        // messages.push(message); 
+        // io.emit('msg', message); 
+        // index++; 
+
+        let message = new ChatModel({
+            username: socket.username,
+            msg:msg,
             timestamp: moment().format('LT')
-        }
+        })
 
-        messages.push(message); 
-        io.emit('msg', message); 
-        index++; 
-
-        // let message = new ChatModel({
-        //     username: socket.username,
-        //     msg:msg
-        // })
-
-        // message.save((err, doc) => {
-        //     if(err) throw err;
-        //     messages.push(doc);
-        //     io.emit('msg', doc);
-        // })
+        message.save((err, doc) => {
+            if(err) throw err;
+            messages.push(doc);
+            io.emit('msg', doc);
+        })
         
     })
 
@@ -74,4 +75,4 @@ io.on('connection', socket => {
     })
 })
 
-http.listen(process.env.PORT, () => console.log(`Server Connected at port ${process.env.PORT}`));
+http.listen(process.env.PORT || 3000, () => console.log(`Server Connected at port ${process.env.PORT}`));
