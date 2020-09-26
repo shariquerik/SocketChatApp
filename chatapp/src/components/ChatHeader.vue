@@ -5,7 +5,7 @@
         </div>
         <div class="flex justify-between items-baseline mt-1 ">
             <h2 class="text-lg font-medium ml-2 text-gray-300">{{ username }}</h2>
-            <h2 class="text-md bg-green-600 rounded-full px-3 py-1 text-white font-semibold">{{ users.length - 1 }}
+            <h2 class="text-md bg-green-600 rounded-full px-3 py-1 text-white font-semibold">{{ users.length }}
                 <span class="text-xs font-bold"> ONLINE</span>
             </h2>
         </div>

@@ -30,7 +30,8 @@ export default {
       username: "",
       socket: io("http://localhost:3000"),
       messages: [],
-      users: []
+      users: [],
+      index: 0
     };
   },
 
@@ -50,10 +51,11 @@ export default {
     listen(){
       this.socket.on('userOnline', user => {
         this.users.push(user);
-        console.log(`${user} is online on client`)
+        this.joinOrLeft(`${user} has joined the room`);
       })
       this.socket.on('userLeft', user => {
         this.users.splice(this.users.indexOf(user), 1);
+        this.joinOrLeft(`${user} has left the room`);
       })
       this.socket.on('msg', message => {
         this.messages.push(message);
@@ -63,6 +65,14 @@ export default {
     // send message to server
     sendMessage(message){
       this.socket.emit('msg', message);
+    },
+
+    joinOrLeft(message){
+      let m = {
+        msg: message,
+        flag : 0
+      }
+      this.messages.push(m)
     }
 
   },

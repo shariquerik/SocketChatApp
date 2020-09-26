@@ -37,8 +37,7 @@ io.on('connection', socket => {
         console.log(`${username} has joined the room`);
         socket.username = username;
         users.push(socket);
-
-        io.emit('userOnline', socket.username );
+        socket.broadcast.emit('userOnline', socket.username );
     })
 
     // new msg came
