@@ -10,7 +10,7 @@ let users = [];
 let messages = [];
 // let index = 0; 
 
-mongoose.connect( process.env.DB_NAME ,{ useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true, })
+mongoose.connect( 'mongodb+srv://Shariq:asdf1234@cluster0.t31yc.gcp.mongodb.net/ChatApp?retryWrites=true&w=majority' ,{ useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true, })
         .then(() => console.log('DB connnection successful!'));
 
 const ChatSchema = new mongoose.Schema({
