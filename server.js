@@ -9,7 +9,7 @@ require('dotenv').config();
 let users = [];
 let messages = [];
 
-mongoose.connect( 'mongodb+srv://Shariq:asdf1234@cluster0.t31yc.gcp.mongodb.net/ChatApp?retryWrites=true&w=majority' ,{ useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true, })
+mongoose.connect( process.env.DB_NAME ,{ useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true, })
         .then(() => console.log('DB connnection successful!'));
 
 // Schema Creation
