@@ -1,5 +1,5 @@
 <template>
-  <div class="container mx-auto md:flex md:justify-around ">
+  <div id="app" class="container mx-auto md:flex md:justify-around ">
     <router-view></router-view>
   </div>
 </template>
@@ -9,13 +9,5 @@
 export default {
   name: "app",
   components: {},
-  data() {
-    return{
-
-    };
-  },
 };
 </script>
-
-<style>
-</style>
