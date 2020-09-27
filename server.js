@@ -81,10 +81,10 @@ io.on('connection', socket => {
 })
 
 if(process.env.NODE_ENV === 'production'){
-    app.use(express.static('./chatapp/dist'));
+    app.use(express.static('./build'));
 
     app.get('*', function(req, res){
-        res.sendFile(__dirname + './chatapp/dist/index.html');
+        res.sendFile(__dirname + './build/index.html');
     });
 }
 
