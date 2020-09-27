@@ -8,18 +8,20 @@ require('dotenv').config();
 
 let users = [];
 let messages = [];
-// let index = 0; 
 
-mongoose.connect( 'mongodb+srv://Shariq:asdf1234@cluster0.t31yc.gcp.mongodb.net/ChatApp?retryWrites=true&w=majority' ,{ useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true, })
+mongoose.connect( process.env.DB_NAME ,{ useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true, })
         .then(() => console.log('DB connnection successful!'));
 
+// Schema Creation
 const ChatSchema = new mongoose.Schema({
     username: String,
-    msg: String
+    roomid: String,
+    msg: String,
+    timestamp: String
 })
 
+// Model creation
 const ChatModel = mongoose.model('chat', ChatSchema);
-
 ChatModel.find((err, docs) => {
     if(err) throw err;
     messages = docs;
@@ -29,33 +31,31 @@ io.on('connection', socket => {
 
     // user logged In
     socket.emit('loggedIn', {
-        users: users.map(s => s.username), // it creates a new array with only usernames in it.
+        users: users.map(s => {
+            return {username: s.username, roomid: s.roomid}
+        }), // it creates a new array with only usernames in it.
         messages: messages
     })
 
     // new user added
-    socket.on('newUser', username => {
-        console.log(`${username} has joined the room`);
-        socket.username = username;
+    socket.on('newUser', user => {
+        console.log(`${user.username} has joined room ${user.roomid}`);
+        socket.username = user.username;
+        socket.roomid = user.roomid;
         users.push(socket);
-        socket.broadcast.emit('userOnline', socket.username );
+        const soc = {
+            username: socket.username,
+            roomid: socket.roomid
+        }
+        socket.broadcast.emit('userOnline', soc );
     })
 
     // new msg came
     socket.on('msg', msg => {
-        // let message = {
-        //     index: index, 
-        //     username: socket.username, 
-        //     msg: msg,
-        //     timestamp: moment().format('LT')
-        // }
-
-        // messages.push(message); 
-        // io.emit('msg', message); 
-        // index++; 
 
         let message = new ChatModel({
             username: socket.username,
+            roomid: socket.roomid,
             msg:msg,
             timestamp: moment().format('LT')
         })
@@ -70,8 +70,12 @@ io.on('connection', socket => {
 
     // user left
     socket.on('disconnect', () => {
-        console.log(`${socket.username} has left the room`);
-        io.emit('userLeft', socket.username);
+        console.log(`${socket.username} has left room ${socket.roomid}`);
+        const soc = {
+            username: socket.username,
+            roomid: socket.roomid
+        }
+        io.emit('userLeft', soc);
         users.splice(users.indexOf(socket), 1);
     })
 })
@@ -80,7 +84,7 @@ if(process.env.NODE_ENV === 'production'){
     app.use(express.static('./build'));
 
     app.get('*', function(req, res){
-        res.sendFile(__dirname + './build/index.html');
+        res.sendFile(__dirname + './chatapp/dist/index.html');
     });
 }
 
