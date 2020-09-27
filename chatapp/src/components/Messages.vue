@@ -1,6 +1,6 @@
 <template>
     <div class="chat-window bg-indigo-100">
-        <div class="flex message relative" :class="{ 'justify-end' : username === message.username, 'justify-center' : message.flag == 0 }" v-for="message in messages" v-bind:key="message.__id">
+        <div class="flex message relative" :class="{ 'justify-end' : username === message.username, 'justify-center' : message.flag == 0, 'hidden' : roomid != message.roomid }" v-for="message in messages" v-bind:key="message.__id">
             <div class="m-2 rounded-lg mx-3" :class="{ 'bg-indigo-600 p-2' : username === message.username, ' bg-indigo-500 p-2' : username !== message.username && message.flag != 0,'bg-gray-500 p-1' : message.flag == 0 }">
                 <div class="flex flex-wrap w-full">
                     <div class="w-full font-bold tracking-wider text-orange-400 -mt-1" :class="{ 'hidden' : username === message.username || message.flag == 0 }"> {{ message.username }}</div>
@@ -18,6 +18,6 @@
 <script>
 export default {
     name: 'Chatroom',
-    props: ['messages', 'username']
+    props: ['messages', 'username', 'roomid']
 }
 </script>
