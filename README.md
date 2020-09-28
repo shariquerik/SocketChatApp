@@ -1,6 +1,6 @@
 # SocketChatApp
 
-## Demo on
+## Demo
 https://socket-livechatroom.herokuapp.com
 
 ## Android app
