@@ -33,7 +33,7 @@ io.on('connection', socket => {
     socket.emit('loggedIn', {
         users: users.map(s => {
             return {username: s.username, roomid: s.roomid}
-        }), // it creates a new array with only usernames in it.
+        }), // it creates a new array with only usernames and roomid in it.
         messages: messages
     })
 

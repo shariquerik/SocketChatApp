@@ -12,7 +12,7 @@ import Messages from "../components/Messages"
 import ChatHeader from "../components/ChatHeader"
 import Sender from "../components/Sender"
 
-const socketURL = "/"  // http://localhost:3000
+const socketURL = process.env.VUE_APP_URL || '/'
 export default {
   name: "chatroom",
   components: {
@@ -34,7 +34,6 @@ export default {
     // User joined server
     joinServer(){
       this.socket.on('loggedIn', data => {
-        console.log(data);
         this.messages = data.messages;
         this.users = data.users;
         let user = {
@@ -47,7 +46,7 @@ export default {
       this.listen();
     },
 
-    // listen of user arrival, departure and msg
+    // listen of user's arrival, departure and msg
     listen(){
       this.socket.on('userOnline', user => {
         this.users.push(user);
@@ -67,6 +66,7 @@ export default {
       this.socket.emit('msg', message);
     },
 
+    // if user left or join the room push it as a message to display
     joinOrLeft(message, roomid){
       let m = {
         msg: message,
@@ -84,7 +84,7 @@ export default {
     this.joinServer();
   },
 
-  updated: function () {
+  updated() {
       var messages = this.$el.querySelector(".messages");
       messages.scrollTop = messages.scrollHeight;
   }
