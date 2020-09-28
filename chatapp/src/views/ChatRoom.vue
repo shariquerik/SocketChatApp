@@ -12,7 +12,7 @@ import Messages from "../components/Messages"
 import ChatHeader from "../components/ChatHeader"
 import Sender from "../components/Sender"
 
-const socketURL = process.env.VUE_APP_URL || '/'
+const socketURL =  '/' //process.env.VUE_APP_URL || '/'
 export default {
   name: "chatroom",
   components: {
